@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_login_title">Войдите в приложение</string>
+    <string name="auth_login_email_hint">Email</string>
+    <string name="auth_login_password_hint">Пароль</string>
+    <string name="auth_login_apply">Логин</string>
+    <string name="auth_login_restore_password">Забыли пароль ?</string>
+    <string name="app_branding_name">Healthy</string>
+</resources>
