@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.i.auth_impl.signin
+package com.i.auth_impl.signin.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +15,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -27,28 +25,34 @@ import androidx.compose.ui.unit.dp
 import com.i.auth_impl.core.Branding
 import com.i.auth_impl.core.Email
 import com.i.auth_impl.core.Password
-import org.koin.androidx.compose.koinViewModel
+import com.i.auth_impl.signin.component.Event
+import com.i.auth_impl.signin.component.SignInComponent
+import com.i.auth_impl.signin.component.SignInUiModel
+import org.koin.androidx.compose.get
 
 @Composable
-fun SignInScreen(
-    onSignInCompleted: () -> Unit,
-    onSignUpRequired: () -> Unit
-) {
-    val viewModel: SignInViewModel = koinViewModel()
+fun SignInScreen(component: SignInComponent = get()) {
+    val uiModel: SignInUiModel by component.ui.collectAsState(SignInUiModel())
     SignInUi(
-        onSignInCompleted = { email, password ->
-            viewModel.onSignInActionClicked(email, password) {
-                onSignInCompleted()
-            }
+        uiModel = uiModel,
+        onEmailChanged = { text ->
+            component.dispatch(Event.EmailTextInput(text))
         },
-        onSignUpRequired = onSignUpRequired
+        onPasswordChanged = { text ->
+            component.dispatch(Event.PasswordTextInput(text))
+        },
+        onApplySignInClicked = {
+            component.dispatch(Event.SignInClicked)
+        }
     )
 }
 
 @Composable
 fun SignInUi(
-    onSignInCompleted: (String, String) -> Unit,
-    onSignUpRequired: () -> Unit
+    uiModel: SignInUiModel,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onApplySignInClicked: () -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -65,8 +69,13 @@ fun SignInUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                onSignInCompleted = onSignInCompleted,
-                onSignUpRequired = { onSignUpRequired() }
+                email = uiModel.email,
+                isEmailError = uiModel.isEmailInvalid,
+                password = uiModel.password,
+                isPasswordError = uiModel.isPasswordInvalid,
+                onEmailChanged = onEmailChanged,
+                onPasswordChanged = onPasswordChanged,
+                onApplySignInClicked = onApplySignInClicked
             )
         }
     }
@@ -75,11 +84,14 @@ fun SignInUi(
 @Composable
 fun SignInAccount(
     modifier: Modifier = Modifier,
-    onSignInCompleted: (String, String) -> Unit,
-    onSignUpRequired: () -> Unit
+    email: String,
+    isEmailError: Boolean,
+    password: String,
+    isPasswordError: Boolean,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onApplySignInClicked: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -93,15 +105,11 @@ fun SignInAccount(
                 .fillMaxWidth()
                 .padding(top = 64.dp, bottom = 12.dp)
         )
-        Email(email) { text ->
-            email = text
-        }
+        Email(email, isEmailError) { text -> onEmailChanged(text) }
         Spacer(modifier = Modifier.padding(top = 8.dp))
-        Password(password) { text ->
-            password = text
-        }
+        Password(password, isPasswordError) { text -> onPasswordChanged(text) }
         Button(
-            onClick = { onSignInCompleted(email, password) },
+            onClick = { onApplySignInClicked() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
@@ -113,7 +121,9 @@ fun SignInAccount(
         }
         OrSignUpAccount(
             modifier = Modifier.fillMaxWidth(),
-            onSignUpRequired = { onSignUpRequired() }
+            onSignUpRequired = {
+                //onSignUpRequired()
+            }
         )
     }
 }
@@ -151,8 +161,10 @@ fun OrSignUpAccount(
 fun AuthScreenPreview() {
     MaterialTheme {
         SignInUi(
-            onSignInCompleted = { _, _ -> },
-            onSignUpRequired = {},
+            uiModel = SignInUiModel("email", "password"),
+            onEmailChanged = {},
+            onPasswordChanged = {},
+            onApplySignInClicked = {}
         )
     }
 }

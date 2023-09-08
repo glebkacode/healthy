@@ -1,4 +1,4 @@
-package com.i.auth_impl.signin
+package com.i.auth_impl.signin.bl
 
 import com.i.auth_impl.core.User
 

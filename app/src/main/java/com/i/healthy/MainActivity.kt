@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.i.auth_impl.signin.SignInScreen
+import com.i.auth_impl.signin.ui.SignInScreen
 import com.i.auth_impl.signup.SignUpScreen
 import com.i.healthy.ui.theme.HealthyTheme
 import com.i.records_impl.addrecord.AddRecordScreen
@@ -48,14 +48,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = SIGN_IN_SCREEN_ROUTE
                     ) {
                         composable(SIGN_IN_SCREEN_ROUTE) {
-                            SignInScreen(
-                                onSignInCompleted = {
-                                    navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
-                                },
-                                onSignUpRequired = {
-                                    navController.navigate(SIGN_UP_SCREEN_ROUTE)
-                                }
-                            )
+                            SignInScreen()
                         }
                         composable(SIGN_UP_SCREEN_ROUTE) {
                             SignUpScreen {

@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-architecture"))
+
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
@@ -22,6 +24,13 @@ dependencies {
     implementation(libs.okhttpLogging)
     implementation(libs.kotlinSerialization)
     implementation(libs.kotlinSerializationConverter)
+
+    implementation(libs.mvikotlin.core)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.timetravel)
+    implementation(libs.mvikotlin.coroutine)
+    implementation(libs.mvikotlin.logging)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

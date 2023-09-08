@@ -1,11 +1,17 @@
 package com.i.auth_impl.di
 
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import com.arkivanov.essenty.instancekeeper.InstanceKeeperDispatcher
+import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.i.auth_impl.core.AuthRepository
 import com.i.auth_impl.core.AuthRepositoryImpl
 import com.i.auth_impl.core.AuthService
-import com.i.auth_impl.signin.AuthUseCase
-import com.i.auth_impl.signin.AuthUseCaseImpl
-import com.i.auth_impl.signin.SignInViewModel
+import com.i.auth_impl.signin.bl.AuthUseCase
+import com.i.auth_impl.signin.bl.AuthUseCaseImpl
+import com.i.auth_impl.signin.component.SignInComponent
+import com.i.auth_impl.signin.store.DefaultSignInDispatchers
+import com.i.auth_impl.signin.store.SignInDispatchers
 import com.i.auth_impl.signup.CreateAccountUseCase
 import com.i.auth_impl.signup.CreateAccountUseCaseImpl
 import com.i.auth_impl.signup.SignUpViewModel
@@ -29,7 +35,10 @@ val authModule = module {
 }
 
 private fun Module.provideUi() {
-    viewModel { SignInViewModel(get()) }
+    single<SignInDispatchers> { DefaultSignInDispatchers() }
+    factory<StoreFactory> { DefaultStoreFactory() }
+    factory<InstanceKeeper> { InstanceKeeperDispatcher() }
+    factory { SignInComponent(get(), get(), get()) }
     viewModel { SignUpViewModel(get()) }
 }
 
