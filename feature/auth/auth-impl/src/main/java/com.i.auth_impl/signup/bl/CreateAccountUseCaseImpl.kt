@@ -1,4 +1,4 @@
-package com.i.auth_impl.signup
+package com.i.auth_impl.signup.bl
 
 import com.i.auth_impl.core.AuthRepository
 import com.i.auth_impl.core.User

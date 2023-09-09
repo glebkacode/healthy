@@ -12,9 +12,8 @@ import com.i.auth_impl.signin.bl.AuthUseCaseImpl
 import com.i.auth_impl.signin.component.SignInComponent
 import com.i.auth_impl.signin.store.DefaultSignInDispatchers
 import com.i.auth_impl.signin.store.SignInDispatchers
-import com.i.auth_impl.signup.CreateAccountUseCase
-import com.i.auth_impl.signup.CreateAccountUseCaseImpl
-import com.i.auth_impl.signup.SignUpViewModel
+import com.i.auth_impl.signup.bl.CreateAccountUseCase
+import com.i.auth_impl.signup.bl.CreateAccountUseCaseImpl
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

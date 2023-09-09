@@ -1,4 +1,4 @@
-package com.i.auth_impl.signup
+package com.i.auth_impl.signup.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,10 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -23,23 +21,32 @@ import androidx.compose.ui.unit.dp
 import com.i.auth_impl.core.Branding
 import com.i.auth_impl.core.Email
 import com.i.auth_impl.core.Password
-import org.koin.androidx.compose.koinViewModel
+import com.i.auth_impl.signup.component.Event
+import com.i.auth_impl.signup.component.SignUpComponent
+import com.i.auth_impl.signup.component.SignUpUiModel
+import org.koin.androidx.compose.get
 
 @Composable
 fun SignUpScreen(
-    onSignUpCompleted: () -> Unit
+    component: SignUpComponent = get()
 ) {
-    val viewModel: SignUpViewModel by koinViewModel()
-    SignUpUi { email, password ->
-        viewModel.onSignUpClicked(email, password) {
-            onSignUpCompleted()
+    val uiModel by component.ui.collectAsState(SignUpUiModel())
+    SignUpUi(
+        uiModel = uiModel,
+        onEmailChanged = { text ->
+            component.dispatch(Event.EmailTextInput(text))
+        },
+        onPasswordChanged = { text ->
+            component.dispatch(Event.PasswordTextInput(text))
         }
-    }
+    )
 }
 
 @Composable
 fun SignUpUi(
-    onSignUpCompleted: (String, String) -> Unit
+    uiModel: SignUpUiModel,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -55,7 +62,12 @@ fun SignUpUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                onSignUpCompleted = onSignUpCompleted
+                email = uiModel.email,
+                password = uiModel.password,
+                isInvalidEmail = uiModel.isEmailInvalid,
+                isInvalidPassword = uiModel.isPasswordInvalid,
+                onEmailChanged = onEmailChanged,
+                onPasswordChanged = onPasswordChanged
             )
         }
     }
@@ -63,12 +75,14 @@ fun SignUpUi(
 
 @Composable
 fun SignUpAccount(
+    email: String,
+    password: String,
+    isInvalidEmail: Boolean = false,
+    isInvalidPassword: Boolean = false,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onSignUpCompleted: (String, String) -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier
     ) {
@@ -81,15 +95,11 @@ fun SignUpAccount(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             textAlign = TextAlign.Center,
         )
-        Email(email) { text ->
-            email = text
-        }
+        Email(email) { text -> onEmailChanged(text) }
         Spacer(modifier = Modifier.padding(top = 8.dp))
-        Password(password) { text ->
-            password = text
-        }
+        Password(password) { text -> onPasswordChanged(text) }
         Button(
-            onClick = { onSignUpCompleted(email, password) },
+            onClick = { /*onSignUpCompleted(email, password)*/ },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
@@ -106,6 +116,10 @@ fun SignUpAccount(
 @Composable
 fun SignUpScreenPreview() {
     MaterialTheme {
-        SignUpScreen {}
+        SignUpUi(
+            uiModel = SignUpUiModel(),
+            onEmailChanged = {},
+            onPasswordChanged = {}
+        )
     }
 }
