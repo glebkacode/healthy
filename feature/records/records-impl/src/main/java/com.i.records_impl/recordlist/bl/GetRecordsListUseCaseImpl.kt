@@ -1,4 +1,4 @@
-package com.i.records_impl.recordlist
+package com.i.records_impl.recordlist.bl
 
 import com.i.records_impl.core.Record
 import com.i.records_impl.core.RecordsRepository

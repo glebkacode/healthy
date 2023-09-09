@@ -1,7 +1,7 @@
-package com.i.records_impl.recorddetails
+package com.i.records_impl.recorddetails.bl
 
 import com.i.records_impl.core.Record
 
-interface GetRecordsByIdUseCase {
+interface GetRecordByIdUseCase {
     suspend operator fun invoke(id: Long): Record
 }

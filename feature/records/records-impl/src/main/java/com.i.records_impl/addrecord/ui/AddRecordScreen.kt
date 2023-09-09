@@ -1,4 +1,4 @@
-package com.i.records_impl.addrecord
+package com.i.records_impl.addrecord.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -8,64 +8,72 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.i.records_impl.R
-import org.koin.androidx.compose.koinViewModel
+import com.i.records_impl.addrecord.component.AddRecordComponent
+import com.i.records_impl.addrecord.component.AddRecordUiModel
+import com.i.records_impl.addrecord.component.Event
+import org.koin.androidx.compose.get
 
 @Composable
-fun AddRecordScreen() {
-    val viewModel: AddRecordViewModel = koinViewModel()
-    AddRecordUI { date, pressure, feelings ->
-        viewModel.onAddRecordsClicked(date, pressure, feelings)
-    }
+fun AddRecordScreen(
+    component: AddRecordComponent = get()
+) {
+    val uiModel: AddRecordUiModel by component.ui.collectAsState(AddRecordUiModel())
+    AddRecordUI(
+        date = uiModel.date,
+        pressure = uiModel.pressure,
+        feelings = uiModel.feelings,
+        onDateChanged = { text -> component.dispatch(Event.DateTextChanged(text)) },
+        onPressureChanged = { text -> component.dispatch(Event.PressureTextChanged(text)) },
+        onFeelingsChanged = { text -> component.dispatch(Event.FeelingsTextChanged(text)) },
+        onAddButtonClicked = { component.dispatch(Event.AddRecordClicked) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRecordUI(onAddButtonClicked: (String, String, String) -> Unit) {
+fun AddRecordUI(
+    date: String,
+    pressure: String,
+    feelings: String,
+    onDateChanged: (String) -> Unit,
+    onPressureChanged: (String) -> Unit,
+    onFeelingsChanged: (String) -> Unit,
+    onAddButtonClicked: () -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var date by remember { mutableStateOf("") }
         TextField(
             value = date,
-            onValueChange = { text ->
-                date = text
-            },
+            onValueChange = { text -> onDateChanged(text) },
             placeholder = {
                 val text = stringResource(id = R.string.add_record_date_hint)
                 Text(text)
             }
         )
 
-        var pressure by remember { mutableStateOf("") }
         TextField(
             modifier = Modifier.padding(top = 16.dp),
             value = pressure,
-            onValueChange = { text ->
-                pressure = text
-            },
+            onValueChange = { text -> onPressureChanged(text) },
             placeholder = {
                 val text = stringResource(id = R.string.add_record_pressure_hint)
                 Text(text)
             }
         )
 
-        var feelings by remember { mutableStateOf("") }
         TextField(
             modifier = Modifier.padding(top = 16.dp),
             value = feelings,
-            onValueChange = { text ->
-                feelings = text
-            },
+            onValueChange = { text -> (onFeelingsChanged(text)) },
             placeholder = {
                 val text = stringResource(id = R.string.add_record_feelings_hint)
                 Text(text)
@@ -74,7 +82,7 @@ fun AddRecordUI(onAddButtonClicked: (String, String, String) -> Unit) {
 
         Button(
             modifier = Modifier.padding(top = 16.dp),
-            onClick = { onAddButtonClicked(date, pressure, feelings) },
+            onClick = { onAddButtonClicked() },
         ) {
             // val text = stringResource(id = R.string.add_record_create_action)
             Text("Создать")
@@ -86,6 +94,14 @@ fun AddRecordUI(onAddButtonClicked: (String, String, String) -> Unit) {
 @Composable
 fun AddRecordPreview() {
     MaterialTheme {
-        AddRecordUI { _, _, _ -> }
+        AddRecordUI(
+            date = "Date",
+            pressure = "Pressure",
+            feelings = "Feelings",
+            onDateChanged = {},
+            onPressureChanged = {},
+            onFeelingsChanged = {},
+            onAddButtonClicked = {}
+        )
     }
 }

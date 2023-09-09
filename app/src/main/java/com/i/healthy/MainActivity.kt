@@ -20,9 +20,9 @@ import androidx.navigation.compose.rememberNavController
 import com.i.auth_impl.signin.ui.SignInScreen
 import com.i.auth_impl.signup.ui.SignUpScreen
 import com.i.healthy.ui.theme.HealthyTheme
-import com.i.records_impl.addrecord.AddRecordScreen
-import com.i.records_impl.recorddetails.RecordScreen
-import com.i.records_impl.recordlist.RecordsListScreen
+import com.i.records_impl.addrecord.ui.AddRecordScreen
+import com.i.records_impl.recorddetails.ui.RecordScreen
+import com.i.records_impl.recordlist.ui.RecordsListScreen
 
 private const val SIGN_IN_SCREEN_ROUTE = "sign_in_route"
 private const val SIGN_UP_SCREEN_ROUTE = "sign_up_route"
@@ -48,17 +48,13 @@ class MainActivity : ComponentActivity() {
                         startDestination = SIGN_IN_SCREEN_ROUTE
                     ) {
                         composable(SIGN_IN_SCREEN_ROUTE) {
-                            SignInScreen()
+                            SignInScreen() // navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
                         }
                         composable(SIGN_UP_SCREEN_ROUTE) {
-                            SignUpScreen {
-                                navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
-                            }
+                            SignUpScreen() // navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
                         }
                         composable(RECORDS_LIST_SCREEN_ROUTE) {
-                            RecordsListScreen {
-                                navController.navigate(ADD_RECORD_SCREEN_ROUTE)
-                            }
+                            RecordsListScreen() // navController.navigate(ADD_RECORD_SCREEN_ROUTE)
                         }
                         composable(RECORD_SCREEN_ROUTE) {
                             RecordScreen()

@@ -1,4 +1,4 @@
-package com.i.records_impl.recordlist
+package com.i.records_impl.recordlist.ui
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,26 +14,33 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.androidx.compose.koinViewModel
+import com.i.records_impl.recordlist.component.RecordUiModel
+import com.i.records_impl.recordlist.component.RecordsListComponent
+import com.i.records_impl.recordlist.component.RecordsUiModel
+import org.koin.androidx.compose.get
 
 @Composable
 fun RecordsListScreen(
-    onAddRecordClicked: () -> Unit
+    component: RecordsListComponent = get()
 ) {
-    RecordsListUi(onAddRecordClicked)
+    val uiModel: RecordsUiModel by component.ui.collectAsState(RecordsUiModel())
+    RecordsListUi(
+        records = uiModel.records,
+        onAddRecordClicked = {}
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecordsListUi(
+    records: List<RecordUiModel>,
     onAddRecordClicked: () -> Unit
 ) {
-    val viewModel: RecordListViewModel = koinViewModel()
-    val records = viewModel.records.collectAsState().value
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -72,6 +79,6 @@ fun RecordsListUi(
 @Composable
 fun RecordsListScreenPreview() {
     MaterialTheme {
-        RecordsListUi {}
+        RecordsListUi(emptyList()) {}
     }
 }

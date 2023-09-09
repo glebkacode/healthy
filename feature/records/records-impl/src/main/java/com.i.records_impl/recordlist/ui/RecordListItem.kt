@@ -1,4 +1,4 @@
-package com.i.records_impl.recordlist
+package com.i.records_impl.recordlist.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,11 +15,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.i.records_impl.core.Record
+import com.i.records_impl.recordlist.component.RecordUiModel
 
 @Composable
 fun RecordListItem(
     modifier: Modifier = Modifier,
-    record: Record
+    record: RecordUiModel
 ) {
     Surface(modifier = modifier) {
         Column(
@@ -58,8 +59,7 @@ fun RecordListItem(
 fun RecordListItemPreview() {
     MaterialTheme {
         RecordListItem(
-            record = Record(
-                id = 1,
+            record = RecordUiModel(
                 date = "26.06.2023",
                 pressure = "120/80",
                 feelings = "Все отлично, Все отлично, Все отлично, Все отлично, Все отлично, Все отлично"

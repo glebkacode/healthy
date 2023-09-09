@@ -4,6 +4,7 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import com.i.auth_impl.signin.bl.AuthUseCase
 import com.i.auth_impl.signin.store.SignInDispatchers
 import com.i.auth_impl.signin.store.SignInStore
 import com.i.auth_impl.signin.store.SignInStoreFactory
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.map
 
 class SignInComponent(
     private val storeFactory: StoreFactory,
+    private val authUseCase: AuthUseCase,
     private val dispatchers: SignInDispatchers,
     instanceKeeper: InstanceKeeper
 ) : Component<SignInUiModel, Event> {
@@ -20,7 +22,9 @@ class SignInComponent(
     private val signInStore = instanceKeeper.getStore {
         SignInStoreFactory(
             storeFactory = storeFactory,
-            mainCoroutineContext = dispatchers.mainContext
+            authUseCase = authUseCase,
+            mainCoroutineContext = dispatchers.mainContext,
+            ioCoroutineContext = dispatchers.ioContext,
         ).create()
     }
 

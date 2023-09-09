@@ -14,6 +14,7 @@ import com.i.auth_impl.signin.store.DefaultSignInDispatchers
 import com.i.auth_impl.signin.store.SignInDispatchers
 import com.i.auth_impl.signup.bl.CreateAccountUseCase
 import com.i.auth_impl.signup.bl.CreateAccountUseCaseImpl
+import com.i.auth_impl.signup.component.SignUpComponent
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,8 +38,8 @@ private fun Module.provideUi() {
     single<SignInDispatchers> { DefaultSignInDispatchers() }
     factory<StoreFactory> { DefaultStoreFactory() }
     factory<InstanceKeeper> { InstanceKeeperDispatcher() }
-    factory { SignInComponent(get(), get(), get()) }
-    viewModel { SignUpViewModel(get()) }
+    factory { SignInComponent(get(), get(), get(), get()) }
+    factory { SignUpComponent(get(), get(), get()) }
 }
 
 private fun Module.provideDomain() {

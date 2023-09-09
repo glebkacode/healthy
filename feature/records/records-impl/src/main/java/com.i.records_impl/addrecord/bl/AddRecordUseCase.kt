@@ -1,4 +1,4 @@
-package com.i.records_impl.addrecord
+package com.i.records_impl.addrecord.bl
 
 import com.i.records_impl.core.Record
 

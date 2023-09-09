@@ -7,13 +7,18 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.JvmSerializable
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.i.auth_impl.core.User
+import com.i.auth_impl.signin.bl.AuthUseCase
 import com.i.auth_impl.signin.store.SignInStore.Intent
 import com.i.auth_impl.signin.store.SignInStore.State
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 internal class SignInStoreFactory(
     private val storeFactory: StoreFactory,
+    private val authUseCase: AuthUseCase,
     private val mainCoroutineContext: CoroutineContext,
+    private val ioCoroutineContext: CoroutineContext,
 ) {
 
     fun create(): SignInStore =
@@ -35,7 +40,10 @@ internal class SignInStoreFactory(
             when (intent) {
                 is Intent.ChangeEmail -> validateEmail(intent.text)
                 is Intent.ChangePassword -> validatePassword(intent.text)
-                is Intent.SignIn -> signInUser()
+                is Intent.SignIn -> {
+                    val state = getState()
+                    signInUser(state.email, state.password)
+                }
             }
         }
 
@@ -55,8 +63,20 @@ internal class SignInStoreFactory(
             }
         }
 
-        private fun signInUser() {
-            dispatch(Msg.SignIn)
+        private fun signInUser(
+            email: String,
+            password: String
+        ) {
+            scope.launch(ioCoroutineContext) {
+                runCatching {
+                    val user = User(email, password)
+                    authUseCase(user)
+                }.onSuccess {
+                    dispatch(Msg.SignInSuccess)
+                }.onFailure {
+                    dispatch(Msg.SignInFailed)
+                }
+            }
         }
     }
 
@@ -67,7 +87,13 @@ internal class SignInStoreFactory(
                 is Msg.PasswordChanged -> copy(password = msg.text, invalidPassword = false)
                 is Msg.InvalidEmail -> copy(email = msg.text, invalidEmail = true)
                 is Msg.InvalidPassword -> copy(password = msg.text, invalidPassword = true)
-                is Msg.SignIn -> copy(
+                is Msg.SignInSuccess -> copy(
+                    email = "",
+                    password = "",
+                    invalidEmail = false,
+                    invalidPassword = false
+                )
+                is Msg.SignInFailed -> copy(
                     email = "",
                     password = "",
                     invalidEmail = false,
@@ -90,5 +116,6 @@ private sealed interface Msg : JvmSerializable {
 
     @JvmInline
     value class InvalidPassword(val text: String) : Msg
-    object SignIn : Msg
+    object SignInSuccess : Msg
+    object SignInFailed : Msg
 }

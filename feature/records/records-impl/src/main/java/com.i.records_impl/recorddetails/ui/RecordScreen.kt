@@ -1,4 +1,4 @@
-package com.i.records_impl.recorddetails
+package com.i.records_impl.recorddetails.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,17 +11,21 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.i.records_impl.recorddetails.component.RecordUiModel
+import com.i.records_impl.recorddetails.component.RecordsDetailComponent
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.get
 
 @Composable
-fun RecordScreen() {
-    val viewModel: RecordDetailsViewModel = koinViewModel()
-    val recordUi = viewModel.recordState.collectAsState()
-    RecordUi(record = recordUi.value)
+fun RecordScreen(
+    component: RecordsDetailComponent = get()
+) {
+    val uiModel: RecordUiModel by component.ui.collectAsState(RecordUiModel())
+    RecordUi(record = uiModel)
 }
 
 @Composable

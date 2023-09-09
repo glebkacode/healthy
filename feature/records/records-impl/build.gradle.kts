@@ -10,12 +10,20 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-architecture"))
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.navigation)
+
+    implementation(libs.mvikotlin.core)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.timetravel)
+    implementation(libs.mvikotlin.coroutine)
+    implementation(libs.mvikotlin.logging)
+
     implementation(libs.retrofit)
     implementation(libs.kotlinSerializationConverter)
     implementation(libs.koinCore)
