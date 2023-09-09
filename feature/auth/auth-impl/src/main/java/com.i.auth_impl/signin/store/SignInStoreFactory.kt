@@ -11,12 +11,17 @@ import com.i.auth_impl.core.User
 import com.i.auth_impl.signin.bl.AuthUseCase
 import com.i.auth_impl.signin.store.SignInStore.Intent
 import com.i.auth_impl.signin.store.SignInStore.State
+import com.i.navigation.Navigator
+import com.i.navigation.ScreenDest
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
+
+private const val MAX_PASSWORD_LENGTH = 10
 
 internal class SignInStoreFactory(
     private val storeFactory: StoreFactory,
     private val authUseCase: AuthUseCase,
+    private val navigator: Navigator,
     private val mainCoroutineContext: CoroutineContext,
     private val ioCoroutineContext: CoroutineContext,
 ) {
@@ -56,7 +61,7 @@ internal class SignInStoreFactory(
         }
 
         private fun validatePassword(text: String) {
-            if (text.length < 10) {
+            if (text.length < MAX_PASSWORD_LENGTH) {
                 dispatch(Msg.InvalidPassword(text))
             } else {
                 dispatch(Msg.PasswordChanged(text))
@@ -71,10 +76,13 @@ internal class SignInStoreFactory(
                 runCatching {
                     val user = User(email, password)
                     authUseCase(user)
+                    navigator.navigate(ScreenDest.RecordListScreenDest)
                 }.onSuccess {
-                    dispatch(Msg.SignInSuccess)
+                    navigator.navigate(ScreenDest.RecordListScreenDest)
                 }.onFailure {
-                    dispatch(Msg.SignInFailed)
+                    scope.launch(mainCoroutineContext) {
+                        dispatch(Msg.SignInFailed)
+                    }
                 }
             }
         }
@@ -93,6 +101,7 @@ internal class SignInStoreFactory(
                     invalidEmail = false,
                     invalidPassword = false
                 )
+
                 is Msg.SignInFailed -> copy(
                     email = "",
                     password = "",

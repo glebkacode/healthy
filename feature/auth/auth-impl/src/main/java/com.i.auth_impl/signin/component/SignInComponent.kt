@@ -9,12 +9,14 @@ import com.i.auth_impl.signin.store.SignInDispatchers
 import com.i.auth_impl.signin.store.SignInStore
 import com.i.auth_impl.signin.store.SignInStoreFactory
 import com.i.core_architecture.component.Component
+import com.i.navigation.Navigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class SignInComponent(
     private val storeFactory: StoreFactory,
     private val authUseCase: AuthUseCase,
+    private val navigator: Navigator,
     private val dispatchers: SignInDispatchers,
     instanceKeeper: InstanceKeeper
 ) : Component<SignInUiModel, Event> {
@@ -23,6 +25,7 @@ class SignInComponent(
         SignInStoreFactory(
             storeFactory = storeFactory,
             authUseCase = authUseCase,
+            navigator = navigator,
             mainCoroutineContext = dispatchers.mainContext,
             ioCoroutineContext = dispatchers.ioContext,
         ).create()
@@ -31,7 +34,7 @@ class SignInComponent(
     override val ui: Flow<SignInUiModel> = signInStore.stateFlow.map(::stateToUi)
 
     override fun dispatch(event: Event) {
-        when(event) {
+        when (event) {
             is Event.EmailTextInput -> {
                 signInStore.accept(SignInStore.Intent.ChangeEmail(event.email))
             }

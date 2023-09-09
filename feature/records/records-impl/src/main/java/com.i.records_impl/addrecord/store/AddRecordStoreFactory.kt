@@ -101,11 +101,15 @@ class AddRecordStoreFactory(
 private sealed interface Msg : JvmSerializable {
     @JvmInline
     value class DateChanged(val date: String) : Msg
+
     @JvmInline
     value class PressureChanged(val pressure: String) : Msg
+
     @JvmInline
     value class FeelingsChanged(val feelings: String) : Msg
+
     object AddRecordSuccess : Msg
+
     @JvmInline
     value class AddRecordFailed(val throwable: Throwable) : Msg
 }

@@ -10,6 +10,7 @@ interface RecordsListStore : Store<Intent, State, Nothing> {
 
     sealed class Intent : JvmSerializable {
         object GetRecords : Intent()
+        object AddNewRecord : Intent()
     }
 
     data class State(

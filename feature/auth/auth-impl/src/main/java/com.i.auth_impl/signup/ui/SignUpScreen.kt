@@ -64,8 +64,6 @@ fun SignUpUi(
                     .padding(horizontal = 20.dp),
                 email = uiModel.email,
                 password = uiModel.password,
-                isInvalidEmail = uiModel.isEmailInvalid,
-                isInvalidPassword = uiModel.isPasswordInvalid,
                 onEmailChanged = onEmailChanged,
                 onPasswordChanged = onPasswordChanged
             )
@@ -77,8 +75,6 @@ fun SignUpUi(
 fun SignUpAccount(
     email: String,
     password: String,
-    isInvalidEmail: Boolean = false,
-    isInvalidPassword: Boolean = false,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     modifier: Modifier = Modifier,

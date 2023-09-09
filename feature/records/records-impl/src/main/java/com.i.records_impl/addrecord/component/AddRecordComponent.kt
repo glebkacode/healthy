@@ -34,7 +34,7 @@ class AddRecordComponent(
     override val ui: Flow<AddRecordUiModel> = addRecordStore.stateFlow.map(::stateToUi)
 
     override fun dispatch(event: Event) {
-        when(event) {
+        when (event) {
             is Event.DateTextChanged -> addRecordStore.accept(DateChanged(event.text))
             is Event.PressureTextChanged -> addRecordStore.accept(PressureChanged(event.text))
             is Event.FeelingsTextChanged -> addRecordStore.accept(FeelingsChanged(event.text))

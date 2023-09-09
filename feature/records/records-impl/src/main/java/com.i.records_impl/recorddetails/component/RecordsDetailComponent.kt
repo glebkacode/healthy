@@ -29,5 +29,7 @@ class RecordsDetailComponent(
 
     override val ui: Flow<RecordUiModel> = recordsListStore.stateFlow.map(::stateToUi)
 
-    override fun dispatch(event: Event) {}
+    override fun dispatch(event: Event) {
+        // ToDo make some functionality
+    }
 }

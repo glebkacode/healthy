@@ -20,7 +20,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -38,7 +37,7 @@ private fun Module.provideUi() {
     single<SignInDispatchers> { DefaultSignInDispatchers() }
     factory<StoreFactory> { DefaultStoreFactory() }
     factory<InstanceKeeper> { InstanceKeeperDispatcher() }
-    factory { SignInComponent(get(), get(), get(), get()) }
+    factory { SignInComponent(get(), get(), get(), get(), get()) }
     factory { SignUpComponent(get(), get(), get()) }
 }
 

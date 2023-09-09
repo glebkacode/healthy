@@ -11,6 +11,8 @@ import com.i.auth_impl.signup.store.SignUpStore.Intent
 import com.i.auth_impl.signup.store.SignUpStore.State
 import kotlin.coroutines.CoroutineContext
 
+private const val MAX_PASSWORD_LENGTH = 10
+
 internal class SignUpStoreFactory(
     private val storeFactory: StoreFactory,
     private val mainCoroutineContext: CoroutineContext,
@@ -47,7 +49,7 @@ internal class SignUpStoreFactory(
         }
 
         private fun validatePassword(text: String) {
-            if (text.length < 10) {
+            if (text.length < MAX_PASSWORD_LENGTH) {
                 dispatch(Msg.InvalidPassword(text))
             } else {
                 dispatch(Msg.PasswordChanged(text))

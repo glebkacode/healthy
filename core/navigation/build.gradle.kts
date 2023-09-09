@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.i.core_architecture"
+    namespace = "com.i.navigation"
 }
 
 dependencies {
@@ -16,5 +16,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.coroutine)
+    implementation(libs.koinCore)
+    implementation(libs.koinCompose)
     detektPlugins(libs.detektFormatting)
 }

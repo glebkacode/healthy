@@ -8,7 +8,8 @@ import com.arkivanov.mvikotlin.core.utils.JvmSerializable
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.i.records_impl.core.Record
 import com.i.records_impl.recorddetails.bl.GetRecordByIdUseCase
-import com.i.records_impl.recorddetails.store.RecordDetailsStore.*
+import com.i.records_impl.recorddetails.store.RecordDetailsStore.Intent
+import com.i.records_impl.recorddetails.store.RecordDetailsStore.State
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -44,7 +45,7 @@ class RecordsDetailsStoreFactory(
             scope.launch(ioContext) {
                 runCatching {
                     getRecordByIdUseCase(id)
-                }.onSuccess {  records ->
+                }.onSuccess { records ->
                     dispatch(Msg.GetRecordByIdSuccess(records))
                 }.onFailure { throwable ->
                     dispatch(Msg.GetRecordByIdFailed(throwable))

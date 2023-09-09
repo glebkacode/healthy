@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.i.records_impl.recordlist.component.Event
 import com.i.records_impl.recordlist.component.RecordUiModel
 import com.i.records_impl.recordlist.component.RecordsListComponent
 import com.i.records_impl.recordlist.component.RecordsUiModel
@@ -31,7 +32,7 @@ fun RecordsListScreen(
     val uiModel: RecordsUiModel by component.ui.collectAsState(RecordsUiModel())
     RecordsListUi(
         records = uiModel.records,
-        onAddRecordClicked = {}
+        onAddRecordClicked = { component.dispatch(Event.AddNewRecordClicked) }
     )
 }
 

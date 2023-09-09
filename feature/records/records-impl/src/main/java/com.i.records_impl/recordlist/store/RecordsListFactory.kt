@@ -6,6 +6,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.JvmSerializable
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.i.navigation.Navigator
+import com.i.navigation.ScreenDest
 import com.i.records_impl.core.Record
 import com.i.records_impl.recordlist.bl.GetRecordsListUseCase
 import com.i.records_impl.recordlist.store.RecordsListStore.Intent
@@ -16,6 +18,7 @@ import kotlin.coroutines.CoroutineContext
 class RecordsListFactory(
     private val storeFactory: StoreFactory,
     private val getRecordsListUseCase: GetRecordsListUseCase,
+    private val navigator: Navigator,
     private val mainContext: CoroutineContext,
     private val ioContext: CoroutineContext
 ) {
@@ -38,6 +41,7 @@ class RecordsListFactory(
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
                 is Intent.GetRecords -> getRecords()
+                is Intent.AddNewRecord -> addNewRecord()
             }
         }
 
@@ -45,11 +49,17 @@ class RecordsListFactory(
             scope.launch(ioContext) {
                 runCatching {
                     getRecordsListUseCase()
-                }.onSuccess {  records ->
+                }.onSuccess { records ->
                     dispatch(Msg.GetRecordsSuccess(records))
                 }.onFailure { throwable ->
                     dispatch(Msg.GetRecordsFailed(throwable))
                 }
+            }
+        }
+
+        private fun addNewRecord() {
+            scope.launch(ioContext) {
+                navigator.navigate(ScreenDest.AddRecordScreenDest)
             }
         }
     }

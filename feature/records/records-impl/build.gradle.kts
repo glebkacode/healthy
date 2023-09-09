@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(project(":core:core-architecture"))
+    implementation(project(":core:navigation"))
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
     implementation(libs.ui.graphics)

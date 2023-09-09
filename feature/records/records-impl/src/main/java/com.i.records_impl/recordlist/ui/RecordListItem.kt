@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.i.records_impl.core.Record
 import com.i.records_impl.recordlist.component.RecordUiModel
 
 @Composable

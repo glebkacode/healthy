@@ -27,7 +27,7 @@ class SignUpComponent(
     override val ui: Flow<SignUpUiModel> = signUpStore.stateFlow.map(::stateToUi)
 
     override fun dispatch(event: Event) {
-        when(event) {
+        when (event) {
             is Event.EmailTextInput -> {
                 signUpStore.accept(SignUpStore.Intent.EmailChanged(event.email))
             }

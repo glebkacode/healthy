@@ -2,6 +2,7 @@ package com.i.healthy
 
 import android.app.Application
 import com.i.auth_impl.di.authModule
+import com.i.navigation.navigationModule
 import com.i.records_impl.di.recordsModule
 import org.koin.core.context.startKoin
 
@@ -12,6 +13,7 @@ class HealthyApplication : Application() {
         startKoin {
             modules(
                 listOf(
+                    navigationModule,
                     authModule,
                     recordsModule
                 )

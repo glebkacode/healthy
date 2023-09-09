@@ -12,6 +12,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-architecture"))
+    implementation(project(":core:navigation"))
     implementation(project(":feature:auth:auth-impl"))
     implementation(project(":feature:records:records-impl"))
     implementation(libs.core.ktx)

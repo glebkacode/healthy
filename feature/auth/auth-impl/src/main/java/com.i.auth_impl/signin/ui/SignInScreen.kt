@@ -92,7 +92,6 @@ fun SignInAccount(
     onPasswordChanged: (String) -> Unit,
     onApplySignInClicked: () -> Unit
 ) {
-
     Column(
         modifier = modifier
     ) {
@@ -122,7 +121,7 @@ fun SignInAccount(
         OrSignUpAccount(
             modifier = Modifier.fillMaxWidth(),
             onSignUpRequired = {
-                //onSignUpRequired()
+                // onSignUpRequired()
             }
         )
     }

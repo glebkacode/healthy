@@ -9,6 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -20,15 +23,16 @@ import androidx.navigation.compose.rememberNavController
 import com.i.auth_impl.signin.ui.SignInScreen
 import com.i.auth_impl.signup.ui.SignUpScreen
 import com.i.healthy.ui.theme.HealthyTheme
+import com.i.navigation.Navigator
+import com.i.navigation.ScreenDest.AddRecordScreenDest
+import com.i.navigation.ScreenDest.RecordDetailsScreenDest
+import com.i.navigation.ScreenDest.RecordListScreenDest
+import com.i.navigation.ScreenDest.SignInScreenDest
+import com.i.navigation.ScreenDest.SignUpScreenDest
 import com.i.records_impl.addrecord.ui.AddRecordScreen
 import com.i.records_impl.recorddetails.ui.RecordScreen
 import com.i.records_impl.recordlist.ui.RecordsListScreen
-
-private const val SIGN_IN_SCREEN_ROUTE = "sign_in_route"
-private const val SIGN_UP_SCREEN_ROUTE = "sign_up_route"
-private const val RECORDS_LIST_SCREEN_ROUTE = "records_list_route"
-private const val RECORD_SCREEN_ROUTE = "record_route"
-private const val ADD_RECORD_SCREEN_ROUTE = "add_record_route"
+import org.koin.androidx.compose.get
 
 class MainActivity : ComponentActivity() {
 
@@ -39,27 +43,36 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     val navController: NavHostController = rememberNavController()
+                    val screenNavigator: Navigator = get()
+                    val screen by screenNavigator.screen.collectAsState()
+
+                    LaunchedEffect(screen) {
+                        if (navController.currentDestination?.route != screen.id) {
+                            navController.navigate(screen.id)
+                        }
+                    }
+
                     NavHost(
                         modifier = Modifier,
                         navController = navController,
-                        startDestination = SIGN_IN_SCREEN_ROUTE
+                        startDestination = SignInScreenDest.id
                     ) {
-                        composable(SIGN_IN_SCREEN_ROUTE) {
+                        composable(SignInScreenDest.id) {
                             SignInScreen() // navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
                         }
-                        composable(SIGN_UP_SCREEN_ROUTE) {
+                        composable(SignUpScreenDest.id) {
                             SignUpScreen() // navController.navigate(RECORDS_LIST_SCREEN_ROUTE)
                         }
-                        composable(RECORDS_LIST_SCREEN_ROUTE) {
+                        composable(RecordListScreenDest.id) {
                             RecordsListScreen() // navController.navigate(ADD_RECORD_SCREEN_ROUTE)
                         }
-                        composable(RECORD_SCREEN_ROUTE) {
+                        composable(RecordDetailsScreenDest.id) {
                             RecordScreen()
                         }
-                        composable(ADD_RECORD_SCREEN_ROUTE) {
+                        composable(AddRecordScreenDest.id) {
                             AddRecordScreen()
                         }
                     }

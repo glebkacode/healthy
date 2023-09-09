@@ -8,8 +8,8 @@ import com.i.records_impl.core.RecordService
 import com.i.records_impl.core.RecordsDispatchers
 import com.i.records_impl.core.RecordsRepository
 import com.i.records_impl.core.RecordsRepositoryImpl
-import com.i.records_impl.recorddetails.bl.GetRecordByIdUseCaseImpl
 import com.i.records_impl.recorddetails.bl.GetRecordByIdUseCase
+import com.i.records_impl.recorddetails.bl.GetRecordByIdUseCaseImpl
 import com.i.records_impl.recorddetails.component.RecordsDetailComponent
 import com.i.records_impl.recordlist.bl.GetRecordsListUseCase
 import com.i.records_impl.recordlist.bl.GetRecordsListUseCaseImpl
@@ -20,7 +20,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -48,7 +47,7 @@ private fun Module.provideDomain() {
 private fun Module.provideUi() {
     single<RecordsDispatchers> { DefaultRecordsDispatcher() }
 
-    factory { RecordsListComponent(get(), get(), get(), get()) }
+    factory { RecordsListComponent(get(), get(), get(), get(), get()) }
     factory { RecordsDetailComponent(get(), get(), get(), get()) }
     factory { AddRecordComponent(get(), get(), get(), get()) }
 }
