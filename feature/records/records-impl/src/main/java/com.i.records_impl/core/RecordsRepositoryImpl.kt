@@ -1,6 +1,6 @@
 package com.i.records_impl.core
 
-import com.i.records_impl.addrecord.map
+import com.i.records_impl.addrecord.bl.map
 
 internal class RecordsRepositoryImpl(
     private val recordService: RecordService
