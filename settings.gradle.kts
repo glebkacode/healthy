@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "healthy"
 include(":app")
+includeModulesFrom("core")
 includeModulesFrom("feature")
 includeBuild("build-logic")
 
