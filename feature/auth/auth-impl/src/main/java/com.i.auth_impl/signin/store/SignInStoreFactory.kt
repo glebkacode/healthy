@@ -73,6 +73,9 @@ internal class SignInStoreFactory(
             password: String
         ) {
             scope.launch(ioCoroutineContext) {
+                navigator.navigate(ScreenDest.DevelopDest)
+            }
+/*            scope.launch(ioCoroutineContext) {
                 runCatching {
                     val user = User(email, password)
                     authUseCase(user)
@@ -84,7 +87,7 @@ internal class SignInStoreFactory(
                         dispatch(Msg.SignInFailed)
                     }
                 }
-            }
+            }*/
         }
     }
 

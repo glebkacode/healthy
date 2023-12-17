@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="develop_screen_title">Настройки фичей в приложении для отладки</string>
+    <string name="develop_auth_feature_title">Авторизация</string>
+    <string name="develop_auth_feature_description">Функция отвечает за то чтобы авторизовать пользователя в системе</string>
+    <string name="develop_player_feature_title">Плеер</string>
+    <string name="develop_player_feature_description">Просмотре рекомендаций от врачей</string>
+    <string name="develop_calls_feature_title">Звонок</string>
+    <string name="develop_calls_feature_develop">Возможность позвонить врачу через приложение</string>
+    <string name="develop_save_settings_action">Применить</string>
+</resources>

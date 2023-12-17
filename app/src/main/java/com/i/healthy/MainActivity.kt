@@ -22,9 +22,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.i.auth_impl.signin.ui.SignInScreen
 import com.i.auth_impl.signup.ui.SignUpScreen
+import com.i.develop_impl.DevelopScreen
 import com.i.healthy.ui.theme.HealthyTheme
 import com.i.navigation.Navigator
+import com.i.navigation.ScreenDest
 import com.i.navigation.ScreenDest.AddRecordScreenDest
+import com.i.navigation.ScreenDest.DevelopDest
 import com.i.navigation.ScreenDest.RecordDetailsScreenDest
 import com.i.navigation.ScreenDest.RecordListScreenDest
 import com.i.navigation.ScreenDest.SignInScreenDest
@@ -74,6 +77,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(AddRecordScreenDest.id) {
                             AddRecordScreen()
+                        }
+                        composable(DevelopDest.id) {
+                            DevelopScreen()
                         }
                     }
                 }
